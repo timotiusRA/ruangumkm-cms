@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { PORT } = process.env;
 const express = require("express");
 const logger = require("morgan");
 
@@ -6,7 +7,7 @@ const cors = require("cors");
 const mainRouter = require("./src/routes");
 
 const app = express();
-const port = 8080;
+const port = PORT;
 const server = require("http").createServer(app);
 
 app.use(express.static("public"));
