@@ -24,7 +24,7 @@ module.exports = {
               },
             });
             let emailActivation = {
-              fron: "RuangUMKM <ruangumkm@mmail.com>",
+              from: "RuangUMKM <ruangumkm@mmail.com>",
               to: body.UserEmail,
               subject: "Activation Email",
               html: `
@@ -170,7 +170,7 @@ module.exports = {
                         },
                       });
                       let emailActivation = {
-                        fron: "RuangUMKM <ruangumkm@mmail.com>",
+                        from: "RuangUMKM <ruangumkm@mmail.com>",
                         to: UserEmail,
                         subject: "Activation RuangUMKM",
                         html: `
@@ -290,7 +290,7 @@ module.exports = {
                     },
                   });
                   let emailActivation = {
-                    fron: "RuangUMKM <ruangumkm@mmail.com>",
+                    from: "RuangUMKM <ruangumkm@mmail.com>",
                     to: UserEmail,
                     subject: "Reset Password RuangUMKM",
                     html: `
