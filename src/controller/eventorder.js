@@ -11,6 +11,7 @@ module.exports = {
       ...body,
       OrderStatus: 1,
     };
+
     eventorderModel
       .addeventorder(newBody, id)
       .then((result) => {
@@ -20,6 +21,7 @@ module.exports = {
         res.json(err);
       });
   },
+
   deleteeventorder: (req, res) => {
     const { id } = req.params;
     const { body } = req;

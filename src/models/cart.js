@@ -92,10 +92,11 @@ module.exports = {
 
   getCartById: (id) => {
     return new Promise((resolve, reject) => {
-      const qs = `SELECT a.EventID, a.EventTitle, a.EventBanner,a.EventCompany, b.CategoryTitle, a.EventDate
+      const qs = `SELECT a.EventID, a.EventTitle, a.EventBanner, b.CategoryTitle, a.EventDate, f.TicketStartDate, f.TicketEndDate
       from events AS a  
           INNER JOIN categories as b ON a.EventCategoryID = b.CategoryID 
           INNER JOIN carts_items as g ON a.EventID = g.EventID
+          INNER JOIN tickets as f on a.EventID = f.EventID
           INNER JOIN carts as h  ON  g.CartID = h.CartID
           
           WHERE h.UserID = ?`;

@@ -49,4 +49,45 @@ module.exports = {
         res.json(err);
       });
   },
+
+  activationUser: (req, res) => {
+    const { UserEmail } = req.params;
+    userModel
+      .activationUser(UserEmail)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
+
+  resetPassword: (req, res) => {
+    const { body } = req;
+    const newBody = {
+      ...body,
+      UserModifiedAt: new Date(Date.now()),
+    };
+
+    userModel
+      .resetPassword(newBody)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
+
+  linkResetPassword: (req, res) => {
+    const { UserEmail } = req.body;
+    userModel
+      .linkResetPassword(UserEmail)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
 };

@@ -55,9 +55,11 @@ module.exports = {
     return new Promise((resolve, reject) => {
       const { query } = req;
       const limit = Number(query.lim) || 15;
-      let qs = `SELECT a.EventID, a.EventTitle, a.EventBanner,a.EventCompany, b.CategoryTitle, a.EventDate
-      from events AS a 
-      INNER JOIN categories as b ON a.EventCategoryID = b.CategoryID`;
+      let qs = `SELECT a.EventID, a.EventTitle, a.EventBanner, b.CategoryTitle, a.EventDate, d.TicketStartDate, d.TicketEndDate
+      from events AS a  
+          INNER JOIN categories as b ON a.EventCategoryID = b.CategoryID 
+          INNER JOIN organizers as c ON a.OrganizerID = c.OrganizerID
+          INNER JOIN tickets as d ON a.EventID = d.EventID`;
       if (query.lim != null) {
         qs += " LIMIT ?";
       }
@@ -170,14 +172,13 @@ module.exports = {
     });
   },
   getEventById: (id) => {
-    console.log("ini ada di model", id);
     return new Promise((resolve, reject) => {
-      let qs = `SELECT a.EventID, a.EventTitle, a.EventBanner,a.EventCompany, b.CategoryTitle, a.EventDate
-          from events AS a  
-              INNER JOIN categories as b ON a.EventCategoryID = b.CategoryID 
-              INNER JOIN organizers as c ON a.OrganizerID = c.OrganizerID
-              INNER JOIN tickets as d ON a.EventID = d.EventID
-              WHERE a.EventID = ?`;
+      let qs = `SELECT a.EventID, a.EventTitle, a.EventBanner, b.CategoryTitle, a.EventLongDescription,d.TicketStartDate, d.TicketEndDate ,a.EventDate, a.LinkWebinar
+      from events AS a  
+          INNER JOIN categories as b ON a.EventCategoryID = b.CategoryID 
+          INNER JOIN organizers as c ON a.OrganizerID = c.OrganizerID
+          INNER JOIN tickets as d ON a.EventID = d.EventID
+          WHERE a.EventID = ?`;
       db.query(qs, id, (err, data) => {
         if (!err) {
           let qs = `SELECT a.TagID, b.TagTitle FROM events_tags as a INNER JOIN tags as b on a.TagID = b.TagID WHERE a.EventID = ?`;

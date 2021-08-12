@@ -5,4 +5,8 @@ const checkToken = require("../helpers/middleware/checkToken");
 userRouter.post("/register", checkToken.isRegistered, userController.register);
 userRouter.post("/login", userController.login);
 userRouter.put("/updateUser", checkToken.login, userController.updateUser);
+userRouter.get("/activation/:UserEmail", userController.activationUser);
+userRouter.put("/resetpassword", userController.resetPassword);
+userRouter.post("/sendlinkresetpassword", userController.linkResetPassword);
+
 module.exports = userRouter;
