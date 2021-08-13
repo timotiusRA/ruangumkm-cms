@@ -12,8 +12,10 @@ const storage = multer.diskStorage({
       cb(null, "./public/images/EventBanner");
     } else if (file.fieldname === "BusinessKTPFile") {
       cb(null, "./public/images/businessKtpFile");
-    } else if (file.fieldname === "BusinessKTPFile") {
-      cb(null, "./public/images/BusinessNPWPFile");
+    } else if (file.fieldname === "BusinessNPWPFile") {
+      cb(null, "./public/images/businessNPWPFile");
+    } else if (file.fieldname === "BusinessMatchBanner") {
+      cb(null, "./public/images/businessMatchBanner");
     }
   },
   filename: (req, file, cb) => {
@@ -32,6 +34,7 @@ const multiUpload = (req, res, next) => {
     { name: "OrganizerLogo", maxCount: 1 },
     { name: "OrganizerCover", maxCount: 1 },
     { name: "EventBanner", maxCount: 1 },
+    { name: "BusinessMatchBanner", maxCount: 1 },
     { name: "BusinessKTPFile", maxCount: 1 },
     { name: "BusinessNPWPFile", maxCount: 1 },
   ]);

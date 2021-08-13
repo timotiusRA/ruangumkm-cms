@@ -13,7 +13,7 @@ const cartRouter = require("./cart");
 const eventorderRouter = require("./eventorder");
 const businessRouter = require("./business");
 const pekanusahaRouter = require("./pekanusaha");
-const eventpekanusahaRouter = require("./eventpekanusaha");
+const businessmatchingRouter = require("./businessmatching");
 
 mainRouter.use("/", WelcomeRouter);
 mainRouter.use("/user", userRouter);
@@ -27,6 +27,6 @@ mainRouter.use("/cart", cartRouter);
 mainRouter.use("/eventorder", eventorderRouter);
 mainRouter.use("/business", businessRouter);
 mainRouter.use("/pekanusaha", pekanusahaRouter);
-mainRouter.use("/eventpekanusaha", eventpekanusahaRouter);
+mainRouter.use("/businessmatching", businessmatchingRouter);
 
 module.exports = mainRouter;

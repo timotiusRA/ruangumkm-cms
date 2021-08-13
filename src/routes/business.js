@@ -7,6 +7,6 @@ businessRouter.post("/", checkToken.login, upload, businessController.postBusine
 businessRouter.get("/", checkToken.login, businessController.getAllBusiness);
 businessRouter.get("/:id", checkToken.login, businessController.getBusinessById);
 businessRouter.delete("/:id", checkToken.login, businessController.deleteBusiness);
-businessRouter.put("/:id", checkToken.login, businessController.updateBusiness);
+businessRouter.put("/:id", checkToken.login, upload, businessController.updateBusiness);
 
 module.exports = businessRouter;
