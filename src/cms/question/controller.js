@@ -11,7 +11,7 @@ module.exports = {
     try {
       const idUser = req.decodedToken.UserID;
       if (req.body.QuestionStatus === "Publish") {
-        req.body.QuestionPublishedAt = Date(Date.now());
+        req.body.QuestionPublishedAt = new Date(Date.now());
         req.body.QuestionPublishedBy = idUser;
       }
       req.body.QuestionAuthorID = idUser;

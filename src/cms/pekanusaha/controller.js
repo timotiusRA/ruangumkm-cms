@@ -1,4 +1,9 @@
-const { getAlllData, getDataCount, getBusinessById } = require("./model");
+const {
+  getAlllData,
+  getDataById,
+  getDataCount,
+  getBusinessById,
+} = require("./model");
 const helper = require("../../helpers/wrapper");
 
 module.exports = {
@@ -40,6 +45,19 @@ module.exports = {
         result,
         pageInfo
       );
+    } catch (error) {
+      console.log(error);
+      return helper.response(res, 400, "Bad Request", error);
+    }
+  },
+
+  getByID: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await getDataById(id);
+      result[0].BusinessInfo = await getBusinessById(result[0].BusinessID);
+
+      return helper.response(res, 400, "Succes get by id", result);
     } catch (error) {
       console.log(error);
       return helper.response(res, 400, "Bad Request", error);

@@ -13,6 +13,18 @@ module.exports = {
     });
   },
 
+  getDataById: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM pekanusaha WHERE PekanUsahaID LIKE ?`,
+        id,
+        (error, result) => {
+          !error ? resolve(result) : reject(new Error(error));
+        }
+      );
+    });
+  },
+
   getDataCount: (keywords) => {
     return new Promise((resolve, reject) => {
       db.query(
