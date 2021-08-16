@@ -18,6 +18,7 @@ const businessmatchingRouter = require("./businessmatching");
 const cmsPekanUsahaRouter = require("../cms/pekanusaha/route");
 const cmsQuestionRouter = require("../cms/question/route");
 const cmsEvaluationRouter = require("../cms/evaluation/route");
+const cmsAuthRouter = require("../cms/auth/route");
 
 mainRouter.use("/", WelcomeRouter);
 mainRouter.use("/user", userRouter);
@@ -33,6 +34,7 @@ mainRouter.use("/business", businessRouter);
 mainRouter.use("/pekanusaha", pekanusahaRouter);
 mainRouter.use("/businessmatching", businessmatchingRouter);
 
+mainRouter.use("/cms/auth", cmsAuthRouter);
 mainRouter.use("/cms/pekanusaha", cmsPekanUsahaRouter);
 mainRouter.use("/cms/question", cmsQuestionRouter);
 mainRouter.use("/cms/eval", cmsEvaluationRouter);
