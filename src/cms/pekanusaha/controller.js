@@ -10,7 +10,7 @@ const {
 } = require("./model");
 const helper = require("../../helpers/wrapper");
 
-const getTotalScore = async (phase) => {
+const getTotalScore = async (phase, pekanUsahaId) => {
   try {
     let totalScore = 0;
     let questionID = await getQusetionId(phase);
@@ -21,7 +21,7 @@ const getTotalScore = async (phase) => {
       return e["QuestionID"];
     });
 
-    const evaluationScore = await getEvaluationScore(questionID);
+    const evaluationScore = await getEvaluationScore(questionID, pekanUsahaId);
     if (evaluationScore.length === 0) {
       return -1;
     }
@@ -65,10 +65,13 @@ module.exports = {
 
       const result = await getAlllData(limit, offset, keywords, sort);
       for (const item of result) {
-        item.AdministrationScore = await getTotalScore("Administration");
-        item.DemoDayScore = await getTotalScore("Demo Day");
-        item.BootcampScore = await getTotalScore("Bootcamp");
-        item.PitchingScore = await getTotalScore("Pitching");
+        item.AdministrationScore = await getTotalScore(
+          "Administration",
+          item.PekanUsahaID
+        );
+        item.DemoDayScore = await getTotalScore("Demo Day", item.PekanUsahaID);
+        item.BootcampScore = await getTotalScore("Bootcamp", item.PekanUsahaID);
+        item.PitchingScore = await getTotalScore("Pitching", item.PekanUsahaID);
         item.BusinessInfo = await getBusinessById(item.BusinessID);
       }
 
@@ -139,7 +142,7 @@ module.exports = {
       const result = await getDataById(id);
       result[0].BusinessInfo = await getBusinessById(result[0].BusinessID);
 
-      return helper.response(res, 400, "Succes get by id", result);
+      return helper.response(res, 200, "Succes get by id", result);
     } catch (error) {
       console.log(error);
       return helper.response(res, 400, "Bad Request", error);

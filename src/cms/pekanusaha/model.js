@@ -88,15 +88,16 @@ module.exports = {
     });
   },
 
-  getEvaluationScore: (collectId) => {
+  getEvaluationScore: (collectId, pekanUsahaId) => {
     return new Promise((resolve, reject) => {
       const fisrtID = collectId.shift();
-      let qs = `SELECT EvaluationScore FROM evaluation WHERE QuestionID = ${fisrtID}`;
+      let qs = `SELECT EvaluationScore FROM evaluation WHERE PekanUsahaID = ${pekanUsahaId} AND (QuestionID = ${fisrtID}`;
       if (collectId.length > 0) {
         for (const e of collectId) {
           qs += ` OR QuestionID = ${e}`;
         }
       }
+      qs += ")";
       db.query(qs, (err, data) => {
         if (!err) {
           resolve(data);
