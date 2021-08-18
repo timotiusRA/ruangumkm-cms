@@ -5,8 +5,22 @@ module.exports = {
   postBusiness: (req) => {
     const id = req.decodedToken.UserID;
     const { body } = req;
-    const imgKTP = JSON.stringify(req.files.BusinessKTPFile.map((e) => `images/businessKtpFile/${e.filename}`));
-    const imgNPWP = JSON.stringify(req.files.BusinessNPWPFile.map((e) => `images/businessNPWPFile/${e.filename}`));
+    let Bodynew;
+    if (req.files.BusinessKTPFile && req.files.BusinessNPWPFile) {
+      const imgKTP = JSON.stringify(req.files.BusinessKTPFile.map((e) => `/images/businessKtpFile/${e.filename}`));
+      const imgNPWP = JSON.stringify(req.files.BusinessNPWPFile.map((e) => `/images/businessNPWPFile/${e.filename}`));
+      newBody = {
+        ...body,
+        BusinessKTPFile: JSON.parse(imgKTP)[0],
+        BusinessNPWPFile: JSON.parse(imgNPWP)[0],
+        BusinessModifiedBy: userId,
+        BusinessModifiedAt: new Date(Date.now()),
+      };
+    } else {
+      BodyNew = {
+        ...body,
+      };
+    }
 
     return new Promise((resolve, reject) => {
       const qs = "SELECT BusinessCreatedBy FROM business WHERE BusinessCreatedBy = ?";
@@ -21,7 +35,7 @@ module.exports = {
             const qs = "SELECT MAX(BusinessID) as BusinessID FROM business";
             db.query(qs, (err, data) => {
               const newBody = {
-                ...body,
+                ...Bodynew,
                 BusinessCode: "B000" + (data[0].BusinessID + 1).toString(),
                 BusinessMonthStand: Number(body.BusinessMonthStand),
                 BusinessYearStand: Number(body.BusinessYearStand),

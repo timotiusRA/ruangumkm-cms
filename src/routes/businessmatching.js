@@ -8,5 +8,6 @@ businessmatchingRouter.get("/", businessmatchingController.getBusinessMatch);
 businessmatchingRouter.put("/:id", checkToken.login, upload, businessmatchingController.updateBusinessMatch);
 businessmatchingRouter.delete("/:id", checkToken.login, businessmatchingController.deleteBusinessMatch);
 businessmatchingRouter.get("/join", checkToken.login, businessmatchingController.getBusinessMatchJoin);
+businessmatchingRouter.get("/getById/:id", checkToken.login, businessmatchingController.getBusinessMatchById);
 
 module.exports = businessmatchingRouter;

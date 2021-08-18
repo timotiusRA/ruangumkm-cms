@@ -90,4 +90,16 @@ module.exports = {
         res.json(err);
       });
   },
+
+  getUserById: (req, res) => {
+    const idUser = req.decodedToken.UserID;
+    userModel
+      .getUserById(idUser)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
 };

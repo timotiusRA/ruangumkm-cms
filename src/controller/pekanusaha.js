@@ -2,17 +2,8 @@ const pekanusahaModel = require("../models/pekanusaha");
 
 module.exports = {
   postPekanusaha: (req, res) => {
-    const id = req.decodedToken.UserID;
-    const { body } = req;
-    const newBody = {
-      ...body,
-      PekanUsahaCreatedAt: new Date(Date.now()),
-      PekanUsahaCreatedBy: id,
-      PekanUsahaModifiedAt: new Date(Date.now()),
-      PekanUsahaStatus: 1,
-    };
     pekanusahaModel
-      .postPekanusaha(newBody)
+      .postPekanusaha(req)
       .then((result) => {
         res.json(result);
       })
@@ -42,16 +33,8 @@ module.exports = {
       });
   },
   updatePekanusaha: (req, res) => {
-    const idUser = req.decodedToken.UserID;
-    const { id } = req.params;
-    const { body } = req;
-    const newBody = {
-      ...body,
-      PekanUsahaModifiedAt: new Date(Date.now()),
-      PekanUsahaModifiedBy: idUser,
-    };
     pekanusahaModel
-      .updatePekanusaha(id, newBody)
+      .updatePekanusaha(req)
       .then((result) => {
         res.json(result);
       })
