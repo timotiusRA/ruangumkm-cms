@@ -50,4 +50,38 @@ module.exports = {
       });
     });
   },
+
+  addPassingGrade: (newBody) => {
+    return new Promise((resolve, reject) => {
+      const qs = `INSERT INTO passing_grade SET ? `;
+      db.query(qs, newBody, (err, data) => {
+        if (!err) {
+          resolve(data);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  },
+
+  updatePassingGrade: (newBody, id) => {
+    return new Promise((resolve, reject) => {
+      const qs = "UPDATE passing_grade SET ? WHERE PassingGradeID = ?";
+      db.query(qs, [newBody, id], (err, data) => {
+        if (!err) {
+          resolve(data);
+        } else {
+          reject(err);
+        }
+      });
+    });
+  },
+
+  getAllPassingGrade: () => {
+    return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM passing_grade`, (error, result) => {
+        !error ? resolve(result) : reject(new Error(error));
+      });
+    });
+  },
 };

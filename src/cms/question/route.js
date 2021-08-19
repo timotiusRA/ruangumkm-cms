@@ -4,7 +4,7 @@ const controller = require("./controller");
 const checkToken = require("../../helpers/middleware/checkToken");
 
 Route.put("/update/:id", checkToken.login, controller.updateQuestion);
-Route.get("/view", checkToken.login, controller.getQuestion);
+Route.get("/view", controller.getQuestion);
 Route.post("/add", checkToken.login, controller.addQuestion);
 
 module.exports = Route;
