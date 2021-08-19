@@ -9,7 +9,7 @@ const helper = require("../../helpers/wrapper");
 module.exports = {
   addEvaluation: async (req, res) => {
     try {
-      const idUser = req.decodedToken.UserID;
+      const idUser = req.decodedToken ? req.decodedToken.UserID : 1;
       req.body.JudgeID = idUser;
       req.body.EvaluationCreatedBy = idUser;
       req.body.EvaluationCreatedAt = new Date(Date.now());

@@ -69,6 +69,10 @@ module.exports = {
           "Administration",
           item.PekanUsahaID
         );
+        item.AdministrationScore = await getTotalScore(
+          "Administration",
+          item.PekanUsahaID
+        );
         item.DemoDayScore = await getTotalScore("Demo Day", item.PekanUsahaID);
         item.BootcampScore = await getTotalScore("Bootcamp", item.PekanUsahaID);
         item.PitchingScore = await getTotalScore("Pitching", item.PekanUsahaID);
@@ -140,6 +144,22 @@ module.exports = {
     try {
       const { id } = req.params;
       const result = await getDataById(id);
+      result[0].AdministrationScore = await getTotalScore(
+        "Administration",
+        result[0].PekanUsahaID
+      );
+      result[0].DemoDayScore = await getTotalScore(
+        "Demo Day",
+        result[0].PekanUsahaID
+      );
+      result[0].BootcampScore = await getTotalScore(
+        "Bootcamp",
+        result[0].PekanUsahaID
+      );
+      result[0].PitchingScore = await getTotalScore(
+        "Pitching",
+        result[0].PekanUsahaID
+      );
       result[0].BusinessInfo = await getBusinessById(result[0].BusinessID);
 
       return helper.response(res, 200, "Succes get by id", result);
