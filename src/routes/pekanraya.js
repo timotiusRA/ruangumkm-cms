@@ -7,5 +7,6 @@ pekanrayaRouter.post("/", checkToken.login, upload, pekanrayaController.postPeka
 pekanrayaRouter.get("/", checkToken.login, pekanrayaController.getPekanraya);
 pekanrayaRouter.put("/", checkToken.login, upload, pekanrayaController.updatePekanraya);
 pekanrayaRouter.delete("/", checkToken.login, pekanrayaController.deletePekanraya);
+pekanrayaRouter.get("/getByReg", checkToken.login, pekanrayaController.getByIdRegPekanraya);
 
 module.exports = pekanrayaRouter;

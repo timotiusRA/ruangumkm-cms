@@ -53,4 +53,14 @@ module.exports = {
         res.json(err);
       });
   },
+  getByRegPekanusaha: (req, res) => {
+    pekanusahaModel
+      .getByRegPekanusaha(req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
 };

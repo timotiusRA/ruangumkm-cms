@@ -14,4 +14,14 @@ module.exports = {
   getPekanraya: (req, res) => {},
   updatePekanraya: (req, res) => {},
   deletePekanraya: (req, res) => {},
+  getByIdRegPekanraya: (req, res) => {
+    pekanrayaModel
+      .getByIdRegPekanraya(req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  },
 };

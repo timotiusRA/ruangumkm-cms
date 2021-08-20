@@ -7,6 +7,7 @@ pekanusahaRouter.post("/", checkToken.login, upload, pekanusahaController.postPe
 pekanusahaRouter.get("/", checkToken.login, pekanusahaController.getPekanusaha);
 pekanusahaRouter.put("/:id", checkToken.login, upload, pekanusahaController.updatePekanusaha);
 pekanusahaRouter.delete("/:id", checkToken.login, pekanusahaController.deletePekanusaha);
+pekanusahaRouter.get("/getByReg", checkToken.login, pekanusahaController.getByRegPekanusaha);
 pekanusahaRouter.get("/:id", checkToken.login, pekanusahaController.getByIdPekanusaha);
 
 module.exports = pekanusahaRouter;

@@ -1,37 +1,62 @@
 const db = require("../configs/mySQL");
-
+const nodemailer = require("nodemailer");
 module.exports = {
   postPekanusaha: (req) => {
     const id = req.decodedToken.UserID;
+    const userEmail = req.decodedToken.UserEmail;
+    const userName = req.decodedToken.UserName;
     const { body } = req;
-    const imgKTP = JSON.stringify(req.files.BusinessKTPFile.map((e) => `images/businessKtpFile/${e.filename}`));
-    const imgNPWP = JSON.stringify(req.files.BusinessNPWPFile.map((e) => `images/businessNPWPFile/${e.filename}`));
+    let informasiUsaha;
     const file = JSON.stringify(req.files.PekanUsahaFile.map((e) => `files/pekanUsahaFile/${e.filename}`));
-
-    const informasiUsaha = {
-      BusinessMatchID: body.BusinessMatchID,
-      BusinessLegalName: body.BusinessLegalName,
-      BusinessBrandName: body.BusinessBrandName,
-      BusinessMonthStand: body.BusinessMonthStand,
-      BusinessYearStand: body.BusinessYearStand,
-      BusinessType: body.BusinessType,
-      BusinessCategory: body.BusinessCategory,
-      BusinessStatusBusiness: body.BusinessStatusBusiness,
-      BusinessSector: body.BusinessSector,
-      BusinessNIB: body.BusinessNIB,
-      BusinessTaxNumber: body.BusinessTaxNumber,
-      BusinessDirectorName: body.BusinessDirectorName,
-      BusinessDirectorNIK: body.BusinessDirectorNIK,
-      BusinessDirectorTaxNumber: body.BusinessDirectorTaxNumber,
-      BusinessKTPFile: JSON.parse(imgKTP)[0],
-      BusinessNPWPFile: JSON.parse(imgNPWP)[0],
-      BusinessWebsite: body.BusinessWebsite,
-      BusinessInstagram: body.BusinessInstagram,
-      BusinessCreatedAt: new Date(Date.now()),
-      BusinessCreatedBy: id,
-      BusinessModifiedAt: new Date(Date.now()),
-      BusinessStatus: 1,
-    };
+    if (req.files.BusinessKTPFile && req.files.BusinessNPWPFile) {
+      const imgKTP = JSON.stringify(req.files.BusinessKTPFile.map((e) => `images/businessKtpFile/${e.filename}`));
+      const imgNPWP = JSON.stringify(req.files.BusinessNPWPFile.map((e) => `images/businessNPWPFile/${e.filename}`));
+      informasiUsaha = {
+        BusinessLegalName: body.BusinessLegalName,
+        BusinessBrandName: body.BusinessBrandName,
+        BusinessMonthStand: body.BusinessMonthStand,
+        BusinessYearStand: body.BusinessYearStand,
+        BusinessType: body.BusinessType,
+        BusinessCategory: body.BusinessCategory,
+        BusinessStatusBusiness: body.BusinessStatusBusiness,
+        BusinessSector: body.BusinessSector,
+        BusinessNIB: body.BusinessNIB,
+        BusinessTaxNumber: body.BusinessTaxNumber,
+        BusinessDirectorName: body.BusinessDirectorName,
+        BusinessDirectorNIK: body.BusinessDirectorNIK,
+        BusinessDirectorTaxNumber: body.BusinessDirectorTaxNumber,
+        BusinessKTPFile: JSON.parse(imgKTP)[0],
+        BusinessNPWPFile: JSON.parse(imgNPWP)[0],
+        BusinessWebsite: body.BusinessWebsite,
+        BusinessInstagram: body.BusinessInstagram,
+        BusinessCreatedAt: new Date(Date.now()),
+        BusinessCreatedBy: id,
+        BusinessModifiedAt: new Date(Date.now()),
+        BusinessStatus: 1,
+      };
+    } else {
+      informasiUsaha = {
+        BusinessLegalName: body.BusinessLegalName,
+        BusinessBrandName: body.BusinessBrandName,
+        BusinessMonthStand: body.BusinessMonthStand,
+        BusinessYearStand: body.BusinessYearStand,
+        BusinessType: body.BusinessType,
+        BusinessCategory: body.BusinessCategory,
+        BusinessStatusBusiness: body.BusinessStatusBusiness,
+        BusinessSector: body.BusinessSector,
+        BusinessNIB: body.BusinessNIB,
+        BusinessTaxNumber: body.BusinessTaxNumber,
+        BusinessDirectorName: body.BusinessDirectorName,
+        BusinessDirectorNIK: body.BusinessDirectorNIK,
+        BusinessDirectorTaxNumber: body.BusinessDirectorTaxNumber,
+        BusinessWebsite: body.BusinessWebsite,
+        BusinessInstagram: body.BusinessInstagram,
+        BusinessCreatedAt: new Date(Date.now()),
+        BusinessCreatedBy: id,
+        BusinessModifiedAt: new Date(Date.now()),
+        BusinessStatus: 1,
+      };
+    }
 
     const informasikelompok = {
       PekanUsahaMemberName1: body.PekanUsahaMemberName1,
@@ -55,20 +80,22 @@ module.exports = {
       PekanUsahaStatus: 1,
     };
 
-    console.log("ini dari informasi usaha", informasiUsaha);
-    console.log("ini dari informasi kelompok ", informasikelompok);
-
     return new Promise((resolve, reject) => {
       //generateBusinessCode
       const qs = `SELECT BusinessID FROM business
       WHERE BusinessID = (
           SELECT MAX(BusinessID) FROM business)`;
-      db.query(qs, (err, data) => {
-        console.log(data[0].BusinessID);
+      db.query(qs, (err, res) => {
         if (!err) {
+          let codebisnis;
+          if (res.length > 0) {
+            codebisnis = "B000" + res[0].BusinessID;
+          } else {
+            codebisnis = "B0001";
+          }
           const newInformasiUsaha = {
             ...informasiUsaha,
-            BusinessCode: "B000" + data[0].BusinessID,
+            BusinessCode: codebisnis,
           };
 
           const qs = `INSERT INTO business SET ? `;
@@ -81,6 +108,40 @@ module.exports = {
               const qs = `INSERT INTO pekanusaha SET ?`;
               db.query(qs, newInformasiKelompok, (err, data) => {
                 if (!err) {
+                  let transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    host: "smtp.gmail.com",
+                    port: 465,
+                    secure: true,
+                    auth: {
+                      user: process.env.USER_EMAIL,
+                      pass: process.env.PASS_EMAIL,
+                    },
+                  });
+                  let emailActivation = {
+                    from: "Ruang UMKM <noreply.fachrighiffary@ruangalternative.com>",
+                    replyTo: "noreply.fachrighiffary@ruangalternative.com",
+                    to: userEmail,
+                    subject: "Ruang UMKM PekanUsaha",
+                    html: `
+                    <center>
+                    <h2 style={{color: 'purple'}}> Hello, ${userName} </h2>
+                    <h3>Terimakasih telah mendaftar pekan usaha, semua data kamu sudah kami terima dan akan kami proses. </h3>
+                    <br></br>
+                    </center>
+                    `,
+                  };
+                  transporter.sendMail(emailActivation, (err, data) => {
+                    if (err) {
+                      console.log("its error: ", err);
+                    } else {
+                      console.log(`Sent to ${UserEmail} Success!!!`);
+                      resolve({
+                        status: 200,
+                        message: "Email berhasil dikirim",
+                      });
+                    }
+                  });
                   resolve({
                     status: 200,
                     message: "Berhasil mendaftar pekan usaha",
@@ -251,6 +312,35 @@ module.exports = {
           reject({
             status: 500,
             message: "Internal Server Error",
+            data: err,
+          });
+        }
+      });
+    });
+  },
+  getByRegPekanusaha: (req) => {
+    const id = req.decodedToken.UserID;
+    return new Promise((resolve, reject) => {
+      const qs = `SELECT * FROM business as a INNER join pekanusaha as b on a.BusinessID = b.BusinessID where b.PekanUsahaCreatedBy = 33`;
+      db.query(qs, id, (err, data) => {
+        if (!err) {
+          if (data.length > 0) {
+            resolve({
+              status: 200,
+              message: "Pekan usaha found",
+              data: data,
+            });
+          } else {
+            reject({
+              status: 200,
+              message: "Pekan usaha not found",
+              data: err,
+            });
+          }
+        } else {
+          reject({
+            status: 200,
+            message: "Internal server error",
             data: err,
           });
         }
