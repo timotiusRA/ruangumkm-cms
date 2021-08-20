@@ -321,7 +321,7 @@ module.exports = {
   getByRegPekanusaha: (req) => {
     const id = req.decodedToken.UserID;
     return new Promise((resolve, reject) => {
-      const qs = `SELECT * FROM business as a INNER join pekanusaha as b on a.BusinessID = b.BusinessID where b.PekanUsahaCreatedBy = 33`;
+      const qs = `SELECT * FROM business as a INNER join pekanusaha as b on a.BusinessID = b.BusinessID where b.PekanUsahaCreatedBy = ?`;
       db.query(qs, id, (err, data) => {
         if (!err) {
           if (data.length > 0) {
