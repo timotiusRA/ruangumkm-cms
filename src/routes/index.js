@@ -14,6 +14,7 @@ const eventorderRouter = require("./eventorder");
 const businessRouter = require("./business");
 const pekanusahaRouter = require("./pekanusaha");
 const businessmatchingRouter = require("./businessmatching");
+const pekanrayaRouter = require("./pekanraya");
 
 const cmsPekanUsahaRouter = require("../cms/pekanusaha/route");
 const cmsQuestionRouter = require("../cms/question/route");
@@ -32,6 +33,7 @@ mainRouter.use("/cart", cartRouter);
 mainRouter.use("/eventorder", eventorderRouter);
 mainRouter.use("/business", businessRouter);
 mainRouter.use("/pekanusaha", pekanusahaRouter);
+mainRouter.use("/pekanraya", pekanrayaRouter);
 mainRouter.use("/businessmatching", businessmatchingRouter);
 
 mainRouter.use("/cms/auth", cmsAuthRouter);

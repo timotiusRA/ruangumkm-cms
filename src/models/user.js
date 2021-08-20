@@ -16,15 +16,16 @@ module.exports = {
             let transporter = nodemailer.createTransport({
               service: "gmail",
               host: "smtp.gmail.com",
-              port: 578,
-              secure: false,
+              port: 465,
+              secure: true,
               auth: {
                 user: process.env.USER_EMAIL,
                 pass: process.env.PASS_EMAIL,
               },
             });
             let emailActivation = {
-              from: "RuangUMKM <ruangumkm@mmail.com>",
+              from: "Ruang UMKM <noreply.fachrighiffary@ruangalternative.com>",
+              replyTo: "noreply.fachrighiffary@ruangalternative.com",
               to: body.UserEmail,
               subject: "Activation Email",
               html: `
@@ -60,6 +61,7 @@ module.exports = {
       });
     });
   },
+
   login: (body) => {
     return new Promise((resolve, reject) => {
       const { UserEmail, UserPassword } = body;
@@ -118,6 +120,7 @@ module.exports = {
       });
     });
   },
+
   updateUser: (id, newBody) => {
     return new Promise((resolve, reject) => {
       const qs = "UPDATE users SET ? WHERE UserID = ?";
@@ -138,6 +141,7 @@ module.exports = {
       });
     });
   },
+
   activationUser: (UserEmail) => {
     const statusUser = {
       UserEmailVerified: 1,
@@ -162,15 +166,15 @@ module.exports = {
                       let transporter = nodemailer.createTransport({
                         service: "gmail",
                         host: "smtp.gmail.com",
-                        port: 578,
-                        secure: false,
+                        port: 587,
+                        secure: true,
                         auth: {
                           user: process.env.USER_EMAIL,
                           pass: process.env.PASS_EMAIL,
                         },
                       });
                       let emailActivation = {
-                        from: "RuangUMKM <ruangumkm@mmail.com>",
+                        from: "Ruang UMKM <ruangumkm@mmail.com>",
                         to: UserEmail,
                         subject: "Activation RuangUMKM",
                         html: `
@@ -224,6 +228,7 @@ module.exports = {
       });
     });
   },
+
   resetPassword: (newBody) => {
     return new Promise((resolve, reject) => {
       const saltRounds = Math.floor(Math.random() * 10 + 1);
@@ -282,15 +287,15 @@ module.exports = {
                   let transporter = nodemailer.createTransport({
                     service: "gmail",
                     host: "smtp.gmail.com",
-                    port: 578,
-                    secure: false,
+                    port: 587,
+                    secure: true,
                     auth: {
                       user: process.env.USER_EMAIL,
                       pass: process.env.PASS_EMAIL,
                     },
                   });
                   let emailActivation = {
-                    from: "RuangUMKM <ruangumkm@mmail.com>",
+                    from: "Ruang UMKM <ruangumkm@mmail.com>",
                     to: UserEmail,
                     subject: "Reset Password RuangUMKM",
                     html: `
@@ -333,6 +338,27 @@ module.exports = {
           reject({
             status: 500,
             message: "internal server error",
+            data: err,
+          });
+        }
+      });
+    });
+  },
+
+  getUserById: (idUser) => {
+    return new Promise((resolve, reject) => {
+      const qs = `SELECT * FROM users WHERE UserID = ?`;
+      db.query(qs, idUser, (err, data) => {
+        if (!err) {
+          resolve({
+            status: 200,
+            message: "Users Found",
+            data: data,
+          });
+        } else {
+          reject({
+            status: 500,
+            message: "Internal server error",
             data: err,
           });
         }

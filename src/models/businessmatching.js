@@ -173,6 +173,27 @@ module.exports = {
       });
     });
   },
+  getBusinessMatchById: (req) => {
+    const { id } = req.params;
+    return new Promise((resolve, reject) => {
+      const qs = `SELECT a.BusinessMatchTitle, a.BusinessMatchDescription, a.BusinessMatchBanner, a.BusinessMatchStart, a.BusinessMatchEnd, a.BusinessMatchDate , b.CategoryTitle FROM business_matching as a INNER JOIN categories as b on a.CategoryID = b.CategoryID WHERE BusinessMatchID = ?`;
+      db.query(qs, id, (err, data) => {
+        if (!err) {
+          resolve({
+            status: 200,
+            message: "detail pekan usaha found",
+            data: data,
+          });
+        } else {
+          reject({
+            status: 500,
+            message: "Server Error",
+            data: err,
+          });
+        }
+      });
+    });
+  },
 };
 
 const removeImage = (filepath) => {

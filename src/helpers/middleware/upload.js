@@ -16,6 +16,12 @@ const storage = multer.diskStorage({
       cb(null, "./public/images/businessNPWPFile");
     } else if (file.fieldname === "BusinessMatchBanner") {
       cb(null, "./public/images/businessMatchBanner");
+    } else if (file.fieldname === "PekanUsahaFile") {
+      cb(null, "./public/files/pekanUsahaFile");
+    } else if (file.fieldname === "PekanRayaKTPFile") {
+      cb(null, "./public/files/pekanRayaFile/file");
+    } else if (file.fieldname === "PekanRayaInformasiSingkat") {
+      cb(null, "./public/files/pekanRayaFile/file");
     }
   },
   filename: (req, file, cb) => {
@@ -37,6 +43,9 @@ const multiUpload = (req, res, next) => {
     { name: "BusinessMatchBanner", maxCount: 1 },
     { name: "BusinessKTPFile", maxCount: 1 },
     { name: "BusinessNPWPFile", maxCount: 1 },
+    { name: "PekanUsahaFile", maxCount: 1 },
+    { name: "PekanRayaKTPFile", maxCount: 1 },
+    { name: "PekanRayaInformasiSingkat", maxCount: 1 },
   ]);
   dataUpload(req, res, (err) => {
     if (err) {

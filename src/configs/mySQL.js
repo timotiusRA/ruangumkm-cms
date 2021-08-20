@@ -1,11 +1,11 @@
-const mysql = require("mysql");
-const { HOST, DB, USER, PASS, DB_PORT } = process.env;
+const mysql = require("mysql2");
+const { DB_HOST, DB_NAME, DB_USER, DB_PASS, DB_PORT } = process.env;
 
 const db = mysql.createConnection({
-  host: HOST,
-  user: USER,
-  password: PASS,
-  database: DB,
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASS,
+  database: DB_NAME,
   port: DB_PORT,
 });
 

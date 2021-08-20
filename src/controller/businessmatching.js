@@ -65,4 +65,15 @@ module.exports = {
         res.json(err);
       });
   },
+
+  getBusinessMatchById: (req, res) => {
+    businessmatchModel
+      .getBusinessMatchById(req)
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((error) => {
+        res.json(error);
+      });
+  },
 };
