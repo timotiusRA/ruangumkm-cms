@@ -9,7 +9,7 @@ const helper = require("../../helpers/wrapper");
 module.exports = {
   addQuestion: async (req, res) => {
     try {
-      const idUser = req.decodedToken.UserID;
+      const idUser = req.decodedToken ? req.decodedToken.UserID : 1;
       if (req.body.QuestionStatus === "Publish") {
         req.body.QuestionPublishedAt = new Date(Date.now());
         req.body.QuestionPublishedBy = idUser;
@@ -32,7 +32,7 @@ module.exports = {
 
       const result = await getAllQuestionSection(phase, status);
       for (const item of result) {
-        item.child = await getQuestionChild(item.QuestionID);
+        item.child = await getQuestionChild(item.QuestionID, status);
       }
       return helper.response(res, 200, "Succes get Question", result);
     } catch (error) {
@@ -43,7 +43,7 @@ module.exports = {
 
   updateQuestion: async (req, res) => {
     try {
-      const idUser = req.decodedToken.UserID;
+      const idUser = req.decodedToken ? req.decodedToken.UserID : 1;
       const { id } = req.params;
       req.body.QuestionModifiedAt = Date(Date.now());
       req.body.QuestionModifiedBy = idUser;

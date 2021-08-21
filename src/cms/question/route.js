@@ -3,8 +3,8 @@ const Route = express.Router();
 const controller = require("./controller");
 const checkToken = require("../../helpers/middleware/checkToken");
 
-Route.put("/update/:id", checkToken.login, controller.updateQuestion);
+Route.put("/update/:id", controller.updateQuestion);
 Route.get("/view", controller.getQuestion);
-Route.post("/add", checkToken.login, controller.addQuestion);
+Route.post("/add", controller.addQuestion);
 
 module.exports = Route;
