@@ -77,7 +77,7 @@ module.exports = {
   getQusetionId: (phase) => {
     return new Promise((resolve, reject) => {
       const qs =
-        "SELECT QuestionID FROM `question` WHERE QuestionPhase = ? AND NOT(ParentID = 0)";
+        "SELECT QuestionID FROM question WHERE QuestionPhase = ? AND NOT(ParentID = 0)";
       db.query(qs, phase, (err, data) => {
         if (!err) {
           resolve(data);

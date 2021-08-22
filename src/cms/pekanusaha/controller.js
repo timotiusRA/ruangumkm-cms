@@ -15,6 +15,7 @@ const getTotalScore = async (phase, pekanUsahaId) => {
     let totalScore = 0;
     let questionID = await getQusetionId(phase);
     if (questionID.length === 0) {
+      console.log("No Question");
       return -1;
     }
     questionID = questionID.map((e) => {
@@ -23,6 +24,7 @@ const getTotalScore = async (phase, pekanUsahaId) => {
 
     const evaluationScore = await getEvaluationScore(questionID, pekanUsahaId);
     if (evaluationScore.length === 0) {
+      console.log("No Evaluation");
       return -1;
     }
     evaluationScore.map((e) => {
@@ -66,11 +68,7 @@ module.exports = {
       const result = await getAlllData(limit, offset, keywords, sort);
       for (const item of result) {
         item.AdministrationScore = await getTotalScore(
-          "Administration",
-          item.PekanUsahaID
-        );
-        item.AdministrationScore = await getTotalScore(
-          "Administration",
+          "Administrasi",
           item.PekanUsahaID
         );
         item.DemoDayScore = await getTotalScore("Demo Day", item.PekanUsahaID);
@@ -145,7 +143,7 @@ module.exports = {
       const { id } = req.params;
       const result = await getDataById(id);
       result[0].AdministrationScore = await getTotalScore(
-        "Administration",
+        "Administrasi",
         result[0].PekanUsahaID
       );
       result[0].DemoDayScore = await getTotalScore(
