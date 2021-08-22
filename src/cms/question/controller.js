@@ -45,7 +45,7 @@ module.exports = {
     try {
       const idUser = req.decodedToken ? req.decodedToken.UserID : 1;
       const { id } = req.params;
-      req.body.QuestionModifiedAt = Date(Date.now());
+      req.body.QuestionModifiedAt = new Date(Date.now());
       req.body.QuestionModifiedBy = idUser;
 
       if (req.body.QuestionStatus === "Publish") {
