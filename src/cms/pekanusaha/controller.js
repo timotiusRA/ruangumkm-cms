@@ -15,7 +15,7 @@ const getTotalScore = async (phase, pekanUsahaId) => {
     let totalScore = 0;
     let questionID = await getQusetionId(phase);
     if (questionID.length === 0) {
-      console.log("No Question");
+      // console.log("No Question");
       return -1;
     }
     questionID = questionID.map((e) => {
@@ -24,7 +24,7 @@ const getTotalScore = async (phase, pekanUsahaId) => {
 
     const evaluationScore = await getEvaluationScore(questionID, pekanUsahaId);
     if (evaluationScore.length === 0) {
-      console.log("No Evaluation");
+      // console.log("No Evaluation");
       return -1;
     }
     evaluationScore.map((e) => {
@@ -124,6 +124,17 @@ module.exports = {
         tresh,
         sort
       );
+
+      for (const item of result) {
+        item.AdministrationScore = await getTotalScore(
+          "Administrasi",
+          item.PekanUsahaID
+        );
+        item.DemoDayScore = await getTotalScore("Demo Day", item.PekanUsahaID);
+        item.BootcampScore = await getTotalScore("Bootcamp", item.PekanUsahaID);
+        item.PitchingScore = await getTotalScore("Pitching", item.PekanUsahaID);
+        item.BusinessInfo = await getBusinessById(item.BusinessID);
+      }
 
       return helper.response(
         res,
